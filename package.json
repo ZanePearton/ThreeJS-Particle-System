@@ -1,0 +1,14 @@
+{
+  "name": "dotcom",
+  "version": "1.0.0",
+  "description": "Project constructed with threejs",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zane",
+  "license": "ISC",
+  "dependencies": {
+    "three": "^0.149.0"
+  }
+}
