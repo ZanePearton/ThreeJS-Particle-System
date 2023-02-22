@@ -1,8 +1,3 @@
-// console.log('indexjs');
-// https://discourse.threejs.org/t/why-my-import-as-three-from-three-didnt-work/16048/12
-
-
-// import * as THREE from './node_modules/three/build/three.module.js'
 
 
 var scene = new THREE.Scene();
