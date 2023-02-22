@@ -1,6 +1,6 @@
 
-// import * as THREE from "three"
-//scene
+//import from CDN API https://cdn.skypack.dev/three
+//imports
 import * as THREE from "https://cdn.skypack.dev/three";
 import {OrbitControls} from "./three/OrbitControls.js";
 
