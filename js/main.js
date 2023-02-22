@@ -1,6 +1,9 @@
 
 // import * as THREE from "three"
 //scene
+import * as THREE from "https://cdn.skypack.dev/three";
+import {OrbitControls} from "./three/OrbitControls.js";
+
 const scene = new THREE.Scene();
 //canvas size
 const size = {
@@ -20,7 +23,6 @@ light.position.set(10,1,10);
 scene.add(light);
 
 // camera
-// const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
 const camera = new THREE.PerspectiveCamera( 45, size.width/size.height);
 camera.position.z = 10;
 scene.add(camera);
@@ -30,6 +32,11 @@ const canvas = document.querySelector('.webgl');
 const renderer = new THREE.WebGLRenderer({canvas});
 renderer.setSize(size.width,size.height);
 renderer.render(scene, camera);
+
+//controls 
+const controls = new OrbitControls(camera, canvas);
+// controls.target.set(0, 5, 0);
+// controls.update();
 
 //update window
 window.addEventListener("resize", () => {
@@ -54,5 +61,6 @@ const loop = () => {
   mesh.position.z += 0.001;
   renderer.render(scene, camera);
   window.requestAnimationFrame(loop);
+  
 }
 loop();
