@@ -1,20 +1,21 @@
 
 //import from CDN API https://cdn.skypack.dev/three
 //imports
+//three import
 import * as THREE from "https://cdn.skypack.dev/three";
+import { OrbitControls } from "./three/OrbitControls.js";
 //gsap import
-// import * as GSAP from "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"; 
-import {OrbitControls} from "./three/OrbitControls.js";
+import { gsap } from "https://cdn.skypack.dev/gsap";
+//comsol log imports
+console.log(gsap);
 
+// set three as a constant
 const scene = new THREE.Scene();
-
 //canvas size
 const size = {
   width: window.innerWidth,
   height: window.innerHeight,
 }
-
-
 
 // geometry 
 const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -56,11 +57,15 @@ window.addEventListener("resize", () => {
 
 //render loop
 const loop = () => {
+  // mesh location >> add acellaration
   mesh.position.z += 0.01;
   mesh.position.y += 0.001;
   mesh.position.z += 0.001;
+  // render to screne
   renderer.render(scene, camera);
+  // loop though animation frame
   window.requestAnimationFrame(loop);
+  //control update function
   controls.update();
 }
 loop();
