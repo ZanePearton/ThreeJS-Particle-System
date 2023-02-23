@@ -2,14 +2,19 @@
 //import from CDN API https://cdn.skypack.dev/three
 //imports
 import * as THREE from "https://cdn.skypack.dev/three";
+//gsap import
+// import * as GSAP from "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"; 
 import {OrbitControls} from "./three/OrbitControls.js";
 
 const scene = new THREE.Scene();
+
 //canvas size
 const size = {
   width: window.innerWidth,
   height: window.innerHeight,
 }
+
+
 
 // geometry 
 const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -51,16 +56,11 @@ window.addEventListener("resize", () => {
 
 //render loop
 const loop = () => {
-  // for (var i = 0; i < particlecount; i++) {
-  //   const x = THREE.MathUtils.randFloatSpread(6);
-  //   const y = THREE.MathUtils.randFloatSpread(6);
-  //   const z = THREE.MathUtils.randFloatSpread(6);
-  // }
   mesh.position.z += 0.01;
   mesh.position.y += 0.001;
   mesh.position.z += 0.001;
   renderer.render(scene, camera);
   window.requestAnimationFrame(loop);
-  
+  controls.update();
 }
 loop();
