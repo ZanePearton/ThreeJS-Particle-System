@@ -1,71 +1,69 @@
-
 //import from CDN API https://cdn.skypack.dev/three
-//imports
 //three import
 import * as THREE from "https://cdn.skypack.dev/three";
 import { OrbitControls } from "./three/OrbitControls.js";
-//gsap import
 import { gsap } from "https://cdn.skypack.dev/gsap";
-//comsol log imports
-console.log(gsap);
-
-// set three as a constant
-const scene = new THREE.Scene();
-//canvas size
+//globals
 const size = {
-  width: window.innerWidth,
-  height: window.innerHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
 }
-
-// geometry 
+//globals
+const scene = new THREE.Scene();
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshStandardMaterial({ color: "#0x00ff83" });
 const mesh = new THREE.Mesh(geometry,material);
-scene.add(mesh);
-
-//light
 const light = new THREE.PointLight(0xffffff, 1, 100);
-light.position.set(10,1,10);
-scene.add(light);
-
-// camera
 const camera = new THREE.PerspectiveCamera( 45, size.width/size.height);
-camera.position.z = 10;
-scene.add(camera);
-
-//render
 const canvas = document.querySelector('.webgl');
-const renderer = new THREE.WebGLRenderer({canvas});
-renderer.setSize(size.width,size.height);
-renderer.render(scene, camera);
-
-//controls 
 const controls = new OrbitControls(camera, canvas);
-// controls.target.set(0, 5, 0);
-// controls.update();
+const renderer = new THREE.WebGLRenderer({canvas});
+const hello = "working yo"; 
+// const rotation = .0009;
 
-//update window
-window.addEventListener("resize", () => {
-  //update size
-  console.log(window.innerWidth);
-  size.width = window.innerWidth;
-  size.height = window.innerHeight;
-  camera.updateProjectionMatrix();
-  camera.aspect = size.width/size.height;
-  renderer.setSize(size.width,size.height);
-})
-
-//render loop
-const loop = () => {
-  // mesh location >> add acellaration
-  mesh.position.z += 0.01;
-  mesh.position.y += 0.001;
-  mesh.position.z += 0.001;
-  // render to screne
-  renderer.render(scene, camera);
-  // loop though animation frame
-  window.requestAnimationFrame(loop);
-  //control update function
-  controls.update();
+//functions
+function init(scene,mesh,light,camera,renderer){
+    console.log(hello)
+    scene.add(mesh)
+    scene.add(mesh);
+    light.position.set(10,1,10);
+    scene.add(light);
+    camera.position.z = 10;
+    scene.add(camera);
+    renderer.setSize(size.width,size.height);
 }
-loop();
+init(scene,mesh,light,camera,renderer);
+
+//functions_animate
+function animate() {
+    requestAnimationFrame(animate);
+    const rotation = .0009;
+    mesh.rotation.x += rotation;
+    mesh.rotation.y += rotation;
+    mesh.rotation.z += rotation;
+    console.log (mesh.rotation.x, mesh.rotation.y ,mesh.rotation.z);
+    render();
+}
+
+//functions_render
+function render() {
+    renderer.render(scene, camera);
+}
+
+//functions_animate
+function onWindowResize() {
+    // Camera frustum aspect ratio
+    camera.aspect = window.innerWidth / window.innerHeight;
+    // After making changes to aspect
+    camera.updateProjectionMatrix();
+    // Reset size
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
+window.addEventListener('resize', onWindowResize, false);
+
+animate();
+
+
+
+
+
