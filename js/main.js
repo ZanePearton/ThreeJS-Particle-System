@@ -3,11 +3,13 @@
 import * as THREE from "https://cdn.skypack.dev/three";
 import { OrbitControls } from "./three/OrbitControls.js";
 import { gsap } from "https://cdn.skypack.dev/gsap";
+
 //globals
 const size = {
     width: window.innerWidth,
     height: window.innerHeight,
 }
+
 //globals
 const scene = new THREE.Scene();
 const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -20,38 +22,48 @@ const controls = new OrbitControls(camera, canvas);
 const renderer = new THREE.WebGLRenderer({canvas, antialias: true});
 const hello = "working yo"; 
 const rotation = .0009;
-var particlecount = 20;
+var particlecount = 2000;
+
 //array
 let  particles = [];
 
+var bgeometry = new THREE.BufferGeometry();
+var bmaterial = new THREE.PointsMaterial({ size: .01, color: 0xffffff });
+var points = new THREE.Points(bgeometry, bmaterial);
 
-//functions_initMain
+// points.rotation.x += rotation;
+// points.rotation.y += rotation;
+// console.log (points.rotation.x, points.rotation.y ,points.rotation.z);
+
+//function_initMain
 function initMain(scene,mesh,light,camera,renderer,particlecount){
-    // pointcloud(particlecount);
+    pointcloud(particlecount);
+    bgeometry.setAttribute('position', new THREE.Float32BufferAttribute(particles, 3));
+    scene.add(points);
     scene.add(mesh);
+    scene.add(points);
     light.position.set(10,1,10);
     scene.add(light);
-    camera.position.z = 10;
+    camera.position.z = 5;
     scene.add(camera);
     renderer.setSize(size.width,size.height);
 }
 
-//functions_pointcloud
+//function_pointcloud_write to an array
 function pointcloud(particlecount){
-    const i = 0;
-    for (const i = 0; i < particlecount; i++) {
-        const x = THREE.MathUtils.randFloatSpread(6);
-        const y = THREE.MathUtils.randFloatSpread(6);
-        const z = THREE.MathUtils.randFloatSpread(6);
+    for (var i = 0; i < particlecount; i++) {
+        var x = THREE.MathUtils.randFloatSpread(6);
+        var y = THREE.MathUtils.randFloatSpread(6);
+        var z = THREE.MathUtils.randFloatSpread(6);
         particles.push(x, y, z);
         console.log (x, y , z);
     }
 }
 
 //initialist_main_fuction
-initMain(scene,mesh,light,camera,renderer);
+initMain(scene,mesh,light,camera,renderer,particlecount);
 
-//functions_animate
+//function_animate
 function animate() {
     requestAnimationFrame(animate);
     const rotation = .0009;
@@ -62,18 +74,21 @@ function animate() {
     render();
 }
 
-//functions_render
+//function_render
 function render() {
     renderer.render(scene, camera);
 }
 
-//functions_animate
+//function_animate
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
+
+//eventlistener window
 window.addEventListener('resize', onWindowResize, false);
+
 //initialist main fuction
 animate();
 
