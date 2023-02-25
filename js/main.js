@@ -10,7 +10,7 @@ const size = {
 };
 const scene = new THREE.Scene();
 const geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
-const pointmaterial = new THREE.PointsMaterial({ size: 0.001, color: 0xffffff });
+const pointmaterial = new THREE.PointsMaterial({ size: .01, color: 0xffffff });
 const material = new THREE.MeshStandardMaterial({ color: "#0x00ff83" });
 const mesh = new THREE.Mesh(geometry, material);
 const light = new THREE.PointLight(0xffffff, 1.3, 100);
@@ -19,7 +19,11 @@ const canvas = document.querySelector(".webgl");
 const controls = new OrbitControls(camera, canvas);
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 const pointgeometry = new THREE.BufferGeometry();
-var particlecount = 300000;
+var particlecount = 30000;
+
+//line geometry 
+// const linegeometry = new THREE.BufferGeometry();
+// const linematerial = new THREE.LineBasicMaterial( { color: 0xffffff, linewidth: 1 } );
 
 // arrays
 const particles = [];
@@ -27,6 +31,7 @@ const velocities = [];
 const color = [];
 //lets 
 let points;
+// let line;
 
 //function_initMain
 function initMain(scene, mesh, light, camera, renderer) {
@@ -52,13 +57,10 @@ function pointcloud(particlecount) {
     var vz = THREE.MathUtils.randFloatSpread(0.02);
     velocities.push(vx, vy, vz);
   }
-  //update array
-  pointgeometry.setAttribute(
-    "position",
-    new THREE.BufferAttribute(new Float32Array(particles), 3)
-  );
   points = new THREE.Points(pointgeometry, pointmaterial);
   scene.add(points);
+  // line = new THREE.Line( linegeometry, linematerial );
+  // scene.add(line);
 }
 
 //update fuction
@@ -80,7 +82,11 @@ function update(){
       "position",
       new THREE.BufferAttribute(new Float32Array(particles), 3)
     );
-    points.geometry = pointgeometry;
+
+    // linegeometry.setAttribute(
+    //   "position",
+    //   new THREE.BufferAttribute(new Float32Array(particles), 3)
+    // );
 
 }
 
