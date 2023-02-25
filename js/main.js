@@ -10,6 +10,7 @@ const size = {
 };
 const scene = new THREE.Scene();
 const geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
+const pointmaterial = new THREE.PointsMaterial({ size: 0.001, color: 0xffffff });
 const material = new THREE.MeshStandardMaterial({ color: "#0x00ff83" });
 const mesh = new THREE.Mesh(geometry, material);
 const light = new THREE.PointLight(0xffffff, 1.3, 100);
@@ -20,14 +21,15 @@ const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 const pointgeometry = new THREE.BufferGeometry();
 var particlecount = 300000;
 
-// Array
+// arrays
 const particles = [];
 const velocities = [];
-const pointmaterial = new THREE.PointsMaterial({ size: 0.001, color: 0x00ff83 });
-let points = null;
+const color = [];
+//lets 
+let points;
 
 //function_initMain
-function initMain(scene, mesh, light, camera, renderer, particlecount) {
+function initMain(scene, mesh, light, camera, renderer) {
   scene.background = new THREE.Color(0x000000);
   scene.add(mesh);
   light.position.set(10, 1, 10);
@@ -50,6 +52,7 @@ function pointcloud(particlecount) {
     var vz = THREE.MathUtils.randFloatSpread(0.02);
     velocities.push(vx, vy, vz);
   }
+  //update array
   pointgeometry.setAttribute(
     "position",
     new THREE.BufferAttribute(new Float32Array(particles), 3)
@@ -58,23 +61,32 @@ function pointcloud(particlecount) {
   scene.add(points);
 }
 
+//update fuction
+function update(){
+    // update
+    for (var i = 0; i < particlecount; i++) {
+      //Update the x position of the particle i by adding the x velocity of particle i
+      particles[i * 3] += velocities[i * 3];
+      // +1,+2,+3 to access x,y,z elements in the array
+      particles[i * 3 + 1] += velocities[i * 3 + 1];
+      particles[i * 3 + 2] += velocities[i * 3 + 2];
+      //Update the x velocity of particle i by adding a random value between -0.001 and 0.001
+      velocities[i * 3] += THREE.MathUtils.randFloatSpread(0.001);
+      velocities[i * 3 + 1] += THREE.MathUtils.randFloatSpread(0.001);
+      velocities[i * 3 + 2] += THREE.MathUtils.randFloatSpread(0.001);
+    }
+    pointgeometry.setAttribute(
+      "position",
+      new THREE.BufferAttribute(new Float32Array(particles), 3)
+    );
+    points.geometry = pointgeometry;
+
+}
+
 //function_animate
 function animate() {
   requestAnimationFrame(animate);
-  for (var i = 0; i < particlecount; i++) {
-    particles[i * 3] += velocities[i * 3];
-    particles[i * 3 + 1] += velocities[i * 3 + 1];
-    particles[i * 3 + 2] += velocities[i * 3 + 2];
-
-    velocities[i * 3] += THREE.MathUtils.randFloatSpread(0.001);
-    velocities[i * 3 + 1] += THREE.MathUtils.randFloatSpread(0.001);
-    velocities[i * 3 + 2] += THREE.MathUtils.randFloatSpread(0.001);
-  }
-  pointgeometry.setAttribute(
-    "position",
-    new THREE.BufferAttribute(new Float32Array(particles), 3)
-  );
-  points.geometry = pointgeometry;
+  update();
   mesh.rotation.x += 0.01;
   mesh.rotation.y += 0.01;
   renderer.render(scene, camera);
@@ -91,6 +103,6 @@ function onWindowResize() {
 window.addEventListener('resize', onWindowResize, false);
 
 // Call the functions
-initMain(scene, mesh, light, camera, renderer, particlecount);
+initMain(scene, mesh, light, camera, renderer);
 pointcloud(particlecount);
 animate();
