@@ -75,6 +75,7 @@ function update(){
       velocities[i * 3 + 1] += THREE.MathUtils.randFloatSpread(0.001);
       velocities[i * 3 + 2] += THREE.MathUtils.randFloatSpread(0.001);
     }
+
     pointgeometry.setAttribute(
       "position",
       new THREE.BufferAttribute(new Float32Array(particles), 3)
